@@ -1,3 +1,5 @@
+const gerarId = require('../utils/gerarId')
+
 module.exports = {
   buscar,
   buscarPorId,
@@ -67,16 +69,7 @@ function buscarPorId(request, response) {
 
 function cadastrar(request, response) {
   const pedido = request.body
-
-  var maxId = 0;
-
-  for(var i = 0; i < pedidos.length; i++) {
-    if(pedidos[i].id > maxId) {
-      maxId = pedidos[i].id
-    }
-  }
-
-  pedido.id = maxId + 1;
+  pedido.id = gerarId(pedidos);
   pedidos.push(pedido)
   return response.json({ message: 'PEDIDO INSERIDO COM SUCESSO' })
 }

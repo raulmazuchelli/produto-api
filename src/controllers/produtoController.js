@@ -1,3 +1,5 @@
+const gerarId = require('../utils/gerarId')
+
 module.exports = {
   buscar,
   buscarPorId,
@@ -67,6 +69,7 @@ function buscarPorId(request, response) {
 
 function cadastrar(request, response) {
   const produto = request.body
+  produto.id = gerarId(produtos);
   produtos.push(produto)
   return response.json({ message: 'INSERIDO COM SUCESSO' })
 }
