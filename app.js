@@ -5,6 +5,7 @@ const port = 3001
 server.use(express.json())
 
 require('./src/routes/produtoRoutes')(server);
+require('./src/routes/pedidoRoutes')(server);
 
 server.listen(port, () => {
   console.log(`listening on port, ${port}`)
