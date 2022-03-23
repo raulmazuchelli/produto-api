@@ -1,26 +1,28 @@
 const gerarId = require('../utils/gerarId')
 
+const usuarios = [
+  {
+    id: 1,
+    login: "raul_",
+    nome:  "raul neto",
+    senha: '123'
+  },
+  {
+    id: 2,
+    login: "moreira_",
+    nome: "thiago moreira",
+    senha: '1234'
+  }
+]
+
 module.exports = {
   buscar,
   buscarPorId,
   cadastrar,
   alterar,
-  deletar
+  deletar,
+  usuarios
 }
-const usuarios = [
-    {
-      id: 1,
-      login: "raul_",
-      nome:  "raul neto",
-      senha: '123'
-    },
-    {
-      id: 2,
-      login: "moreira_",
-      nome: "thiago moreira",
-      senha: '1234'
-    }
-]
 
 function buscar(request, response) {
     let retorno = [];
