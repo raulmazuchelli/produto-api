@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+const jwt = require('../utils/jwt')
 const privateKey = "raul_!321@"
 
 module.exports = {
@@ -7,6 +7,6 @@ module.exports = {
 
 function login(usuario) {
     delete usuario.senha
-    const token = jwt.sign(usuario, privateKey);
+    const token = jwt.criptografar(usuario, privateKey);
     return token
 }

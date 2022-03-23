@@ -1,8 +1,10 @@
 const express = require('express');
+const autenticacao = require('./src/middlewares/autenticacao')
 const server = express();
 const port = 3001
 
 server.use(express.json())
+server.use(autenticacao)
 
 require('./src/routes/produtoRoutes')(server);
 require('./src/routes/pedidoRoutes')(server);
