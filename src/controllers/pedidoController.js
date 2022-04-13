@@ -1,4 +1,4 @@
-const gerarId = require('../utils/gerarId')
+const repository = require('../repository/pedidoRepository');
 
 module.exports = {
   buscar,
@@ -8,102 +8,50 @@ module.exports = {
   deletar
 }
 
-const pedidos = [
-  {
-    id: 1,
-    produto: "arroz",
-    preco: 15,
-    quantidade: '10'
-  },
-  {
-    id: 2,
-    produto: "feijao",
-    preco: 5,
-    quantidade: '10'
-  },
-  {
-    id: 3,
-    produto: "alface",
-    preco: 1,
-    quantidade: '10'
-  },
-]
-
-function buscar(request, response) {
-  let retorno = [];
-
-  if (request.query.produto) {
-    retorno = pedidos.filter(function (p) {
-      if (p.produto === request.query.produto) {
-        return p
-      }
-    })
-  } else {
-    retorno = pedidos
+async function buscar(request, response) {
+  try {
+    const pedidos = await repository.buscar();                              // constante recebe os dados vindos do repository q acessou o banco
+    response.json({ pedidos });                                             // retorna a resposta em formato JSON na tela
+  } catch (err) {                                                         
+    response.status(500).json({ message: err.message || err.stack })         // status(XXX) define o codigo de resposta -- https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
   }
-
-  if (retorno.length === 0) {
-    return response.json({ message: 'NAO ACHEI NADA' })
-  }
-
-  const result = {
-    pedidos: retorno
-  }
-
-  response.json(result)
 }
 
-function buscarPorId(request, response) {
-  const retorno = pedidos.find(function (p) {
-    if (p.id == request.params.id) {
-      return p
-    }
-  })
-
-  const result = {
-    pedidos: retorno
+async function buscarPorId(request, response) {
+  try {
+    const pedido = await repository.buscarPorId(request.params.id);
+    response.json({ pedido });
+  } catch (err) {
+    response.status(500).json({ message: err.message || err.stack })                     //exibe a mensagem de erro
   }
-
-  response.json(result)
 }
 
-function cadastrar(request, response) {
-  const pedido = request.body
-  pedido.id = gerarId(pedidos);
-  pedidos.push(pedido)
-  return response.json({ message: 'PEDIDO INSERIDO COM SUCESSO' })
-}
-
-function alterar(request, response) {
-    const pedido = request.body
-
-    const indexPedidosAlterar = pedidos.findIndex(function (p) {
-      return p.id == request.params.id
-    })
-
-    if (indexPedidosAlterar == -1) {
-      return response.json({ message: 'PEDIDO NAO ENCONTRADO' })
-    }
-
-    pedidos[indexPedidosAlterar] = {
-      id: pedidos[indexPedidosAlterar].id,
-      produto: pedido.produto,
-      preco: pedido.preco,
-      quantidade: pedido.quantidade
-    };
-
-    return response.json({ message: 'PEDIDO ALTERADO COM SUCESSO' })
-}
-
-function deletar(request, response) {
-  const indexDeletar = pedidos.findIndex(function (p) {
-    return p.id == request.params.id
-  })
-
-  if (indexDeletar == -1) {
-    return response.json({ message: 'PEDIDO NAO ENCONTRADO' })
+async function cadastrar(request, response) {
+  try {
+    const pedido = request.body;                                           //recebe o JSON do corpo da requisição com os dados do produto do Postman
+    await repository.cadastrar(pedido);
+    response.status(201).json({ message: 'PEDIDO ADICIONADO COM SUCESSO' })
+  } catch(err) {
+    response.status(500).json({ message: err.message || err.stack })
   }
+}
 
-  pedidos.splice(indexDeletar, 1);
-  return response.json({ message: 'PEDIDO REMOVIDO' })
+async function alterar(request, response) {
+  try {
+    const produto = request.body;
+    const id = request.params.id                                          // "request.params.__" recebe o parametro da rota do URL "http://localhost:3001/produto/:id" na qual a rota é o "/:id"
+    await repository.alterar(id, produto)
+    response.json({ message: 'PEDIDO ALTERADO COM SUCESSO' })
+  } catch(err) {
+    response.status(500).json({ message: err.message || err.stack })
+  }
+}
+
+async function deletar(request, response) {
+  try {
+    await repository.deletar(request.params.id)
+    response.json({ message: 'PEDIDO DELETADO COM SUCESSO' })
+  } catch(err) {
+    response.status(500).json({ message: err.message || err.stack })
+  }
 }
