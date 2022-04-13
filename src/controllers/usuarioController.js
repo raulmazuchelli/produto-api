@@ -21,7 +21,7 @@ async function buscar(request, response) {
 async function buscarPorId(request, response) {
   try {
     const usuario = await repository.buscarPorId(request.params.id);
-    response.json({ usuario: usuario });
+    response.json({ usuario });
   } catch (err) {
     response.json({ message: err.message || err.stack })
   }
