@@ -1,16 +1,10 @@
-const usuarioController = require('../controllers/usuarioController')
-const usuarios = usuarioController.usuarios
+const db = require('../config/database');
 
 module.exports = {
     login
 }
 
-function login(usuario) {
-    const result = usuarios.find(function (user) {
-        if(user.login === usuario.login && user.senha === usuario.senha) {
-            return user
-        }
-    })
-
-    return result;
+async function login(usuario) {
+    const retorno = await db.query('SELECT id, nome, login FROM seguranca.usuario WHERE login = $1 and senha = $2', [usuario.login, usuario.senha])
+    return retorno.rows[0]
 }

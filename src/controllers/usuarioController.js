@@ -14,7 +14,7 @@ async function buscar(request, response) {
     const usuarios = await repository.buscar();
     response.json({ usuarios });
   } catch (err) {
-    response.json({ message: err.message || err.stack })
+    response.status(500).json({ message: err.message || err.stack })
   }
 }
 
@@ -23,7 +23,7 @@ async function buscarPorId(request, response) {
     const usuario = await repository.buscarPorId(request.params.id);
     response.json({ usuario });
   } catch (err) {
-    response.json({ message: err.message || err.stack })
+    response.status(500).json({ message: err.message || err.stack })
   }
 }
 
@@ -32,9 +32,9 @@ async function cadastrar(request, response) {
     const usuario = request.body;
     usuario.senha = md5(usuario.senha);
     await repository.cadastrar(usuario);
-    response.json({ message: 'INSERIDO COM SUCESSO' })
+    response.status(201).json({ message: 'INSERIDO COM SUCESSO' })
   } catch(err) {
-    response.json({ message: err.message || err.stack })
+    response.status(500).json({ message: err.message || err.stack })
   }
 }
 
@@ -45,7 +45,7 @@ async function alterar(request, response) {
     await repository.alterar(request.params.id, usuario)
     response.json({ message: 'ALTERADO COM SUCESSO' })
   } catch(err) {
-    response.json({ message: err.message || err.stack })
+    response.status(500).json({ message: err.message || err.stack })
   }
 }
 
@@ -54,6 +54,6 @@ async function deletar(request, response) {
     await repository.deletar(request.params.id)
     response.json({ message: 'DELETADO COM SUCESSO' })
   } catch(err) {
-    response.json({ message: err.message || err.stack })
+    response.status(500).json({ message: err.message || err.stack })
   }
 }

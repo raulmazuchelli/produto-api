@@ -9,18 +9,18 @@ module.exports = {
 }
 
 async function buscar() {
-    const retorno = await db.query('SELECT id, nome, usuario FROM seguranca.usuario');
+    const retorno = await db.query('SELECT id, nome, login FROM seguranca.usuario');
     return retorno.rows;
 }
 
 async function buscarPorId(id) {
-    const retorno = await db.query('SELECT id, nome, usuario FROM seguranca.usuario where id = $1', [id]); // interrogacao sera subistituido pelo valor no array (id)
+    const retorno = await db.query('SELECT id, nome, login FROM seguranca.usuario where id = $1', [id]); // interrogacao sera subistituido pelo valor no array (id)
     return retorno.rows[0];
 }
 
 async function cadastrar(usuario) {
     await db.query(
-        'INSERT INTO seguranca.usuario(nome, usuario, senha, data_criacao) VALUES($1, $2, $3, $4)',
+        'INSERT INTO seguranca.usuario(nome, login, senha, data_criacao) VALUES($1, $2, $3, $4)',
         [usuario.nome, usuario.usuario, usuario.senha, new Date().toISOString()]
     );
 }

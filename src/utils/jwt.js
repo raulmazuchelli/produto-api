@@ -6,7 +6,7 @@ module.exports = {
 }
 
 function criptografar(objeto, privateKey) {
-    return jwt.sign(objeto, privateKey);
+    return jwt.sign(objeto, privateKey, { expiresIn: '1h' });
 }
 
 function descriptografar(token, privateKey) {
