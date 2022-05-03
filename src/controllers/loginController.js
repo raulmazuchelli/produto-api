@@ -16,7 +16,7 @@ async function login(request, response) {
         }
 
         const token = service.login(usuario)
-        response.json({ usuario, token })
+        response.status(200).json({ usuario, token })
     } catch (err) {
         response.status(500).json({ message: err.message || err.stack })
     }

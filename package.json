@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon app.js",
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "jest"
   },
   "author": "Thiago Moreira",
   "license": "ISC",
@@ -16,6 +17,8 @@
     "pg": "^8.7.3"
   },
   "devDependencies": {
+    "@types/jest": "^27.5.0",
+    "jest": "^28.0.3",
     "nodemon": "^2.0.15"
   }
 }
